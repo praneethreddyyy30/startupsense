@@ -16,7 +16,7 @@ async function fetchGitHubData(keywords: string[]) {
     const query = keywords && keywords.length > 0 ? keywords.slice(0, 3).join(' ') : 'saas';
     const url = `https://api.github.com/search/repositories?q=${encodeURIComponent(query)}&sort=stars&order=desc&per_page=5`;
     const res = await fetch(url, {
-      headers: { 'User-Agent': 'StartupSense-App' }
+      headers: { 'User-Agent': 'Evifacto-App' }
     });
     if (!res.ok) return [];
     const data: any = await res.json();
@@ -519,7 +519,25 @@ function generateHeuristicFallbackReport(input: StartupIdeaInput): ValidationRep
       { agentName: 'Indie Hackers Agent', role: 'Revenue & Failure Post-Mortem Reader', datasetProcessed: 'Indie Hackers database', status: 'Completed' },
       { agentName: 'DNS Feasibility Checker', role: 'Domain Name Registry Prober', datasetProcessed: 'dns.resolve check against .com, .io, .ai', status: 'Completed' },
       { agentName: 'Gemini Synthesis Director', role: 'Grounding Report Orchestrator', datasetProcessed: 'Multi-source dataset synthesis', status: 'Completed' }
-    ]
+    ],
+    customerInterviewScript: {
+      introduction: "Use these 5 open-ended, non-leading questions inspired by 'The Mom Test' framework to talk to potential users.",
+      questions: [
+        "How do you currently handle this problem in your day-to-day work?",
+        "Talk me through the last time you had to deal with this. What was the most frustrating part?",
+        "How much time or money does this issue cost you weekly?",
+        "What workarounds or tools have you tried to solve this? What did you dislike about them?",
+        "If you could automate one part of this workflow today, what would it be?"
+      ]
+    },
+    landingPageCopy: {
+      heroHeadline: `Automate Your ${input.title || 'Business'} Workflows`,
+      heroSubheadline: `A faster, automated way to solve your daily frustrations with no complex manual setup.`,
+      valueProp1: `10x Faster Execution than spreadsheets`,
+      valueProp2: `Real-time intelligence and automated reporting`,
+      valueProp3: `Affordable, self-serve pricing designed for growing teams`,
+      ctaText: `Get Early Beta Access`
+    }
   };
 }
 
@@ -572,7 +590,7 @@ app.post('/api/validate', async (req, res) => {
     const ai = getGenAIClient();
 
     const prompt = `
-You are StartupSense, an advanced evidence-based startup validation engine and market intelligence system.
+You are Evifacto AI, an advanced evidence-based business idea validation engine and market intelligence system.
 Analyze the following startup idea and perform multi-source research evaluation.
 
 STARTUP IDEA DETAILS:
@@ -903,7 +921,7 @@ Output MUST strictly be a JSON object matching this schema structure:
           tools: [{ googleSearch: {} }],
           responseMimeType: 'application/json',
           systemInstruction:
-            'You are StartupSense AI. Generate realistic, data-driven, evidence-backed startup validation reports in valid JSON. Make sure every quote, stat, and recommendation is deeply tailored to the user\'s specific startup idea.',
+            'You are Evifacto AI. Generate realistic, data-driven, evidence-backed startup validation reports in valid JSON. Make sure every quote, stat, and recommendation is deeply tailored to the user\'s specific startup idea.',
         },
       });
       rawText = response.text || '';
@@ -917,7 +935,7 @@ Output MUST strictly be a JSON object matching this schema structure:
           config: {
             responseMimeType: 'application/json',
             systemInstruction:
-              'You are StartupSense AI. Generate realistic, data-driven, evidence-backed startup validation reports in valid JSON. Make sure every quote, stat, and recommendation is deeply tailored to the user\'s specific startup idea.',
+              'You are Evifacto AI. Generate realistic, data-driven, evidence-backed startup validation reports in valid JSON. Make sure every quote, stat, and recommendation is deeply tailored to the user\'s specific startup idea.',
           },
         });
         rawText = response2.text || '';
@@ -1143,7 +1161,7 @@ app.get('/api/validate-stream', async (req, res) => {
     
     // Construct Prompt with actual data injected
     const prompt = `
-You are StartupSense, an advanced evidence-based startup validation engine and market intelligence system.
+You are Evifacto AI, an advanced evidence-based business idea validation engine and market intelligence system.
 Analyze the following startup idea, and incorporate the live harvested datasets from Reddit, Hacker News, GitHub, and DNS Domain searches provided below.
 
 STARTUP IDEA DETAILS:
@@ -1333,6 +1351,18 @@ Output MUST strictly be a JSON object matching this schema structure:
     "verdict": "verdict",
     "keyFactorsForGo": ["factor"],
     "keyFactorsAgainst": ["against"]
+  },
+  "customerInterviewScript": {
+    "introduction": "Brief instructions on how to use customer interviews to validate the concept (e.g. following 'The Mom Test' guidelines).",
+    "questions": ["5 open-ended, non-leading interview questions tailored to uncover core risks and customer frustrations."]
+  },
+  "landingPageCopy": {
+    "heroHeadline": "A benefit-driven, catchy landing page title focusing on solving the primary Reddit pain points.",
+    "heroSubheadline": "A subheadline explaining how this solution automates the workflow in simple terms.",
+    "valueProp1": "Value proposition 1",
+    "valueProp2": "Value proposition 2",
+    "valueProp3": "Value proposition 3",
+    "ctaText": "CTA waitlist/signup button copy"
   }
 }
 `;
@@ -1348,7 +1378,7 @@ Output MUST strictly be a JSON object matching this schema structure:
           tools: [{ googleSearch: {} }],
           responseMimeType: 'application/json',
           systemInstruction:
-            'You are StartupSense AI. Generate realistic, data-driven, evidence-backed startup validation reports in valid JSON. Incorporate the provided Reddit, HN, GitHub, and DNS datasets directly in their respective sections.',
+            'You are Evifacto AI. Generate realistic, data-driven, evidence-backed startup validation reports in valid JSON. Incorporate the provided Reddit, HN, GitHub, and DNS datasets directly in their respective sections.',
         },
       });
       rawText = response.text || '';
@@ -1361,7 +1391,7 @@ Output MUST strictly be a JSON object matching this schema structure:
           config: {
             responseMimeType: 'application/json',
             systemInstruction:
-              'You are StartupSense AI. Generate realistic, data-driven, evidence-backed startup validation reports in valid JSON. Incorporate the provided Reddit, HN, GitHub, and DNS datasets directly in their respective sections.',
+              'You are Evifacto AI. Generate realistic, data-driven, evidence-backed startup validation reports in valid JSON. Incorporate the provided Reddit, HN, GitHub, and DNS datasets directly in their respective sections.',
           },
         });
         rawText = response2.text || '';
@@ -1418,6 +1448,8 @@ Output MUST strictly be a JSON object matching this schema structure:
         mvpFeatures: reportData.mvpFeatures || [],
         evidenceList: reportData.evidenceList || [],
         goNoGoReasoning: reportData.goNoGoReasoning || ({} as any),
+        customerInterviewScript: reportData.customerInterviewScript || undefined,
+        landingPageCopy: reportData.landingPageCopy || undefined,
       };
     }
 
@@ -1460,7 +1492,7 @@ app.post('/api/chat-copilot', async (req, res) => {
     const ai = getGenAIClient();
 
     const systemInstruction = `
-You are the StartupSense Co-Pilot AI, an expert startup strategist and advisor.
+You are the Evifacto AI Co-Pilot, an expert business strategist and validation advisor.
 You are helping a founder analyze their Validation Report for: "${report.ideaInput.title}".
 
 REPORT CONTEXT SUMMARY:
@@ -1514,7 +1546,7 @@ async function startServer() {
   }
 
   app.listen(PORT, '0.0.0.0', () => {
-    console.log(`StartupSense Server listening on http://0.0.0.0:${PORT}`);
+    console.log(`Evifacto Server listening on http://0.0.0.0:${PORT}`);
   });
 }
 

@@ -81,14 +81,14 @@ export const IdeaInputForm: React.FC<IdeaInputFormProps> = ({ onSubmit, isLoadin
       <div className="text-center mb-10">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1A3D2F]/10 border border-[#1A3D2F]/20 text-[#1A3D2F] text-xs font-bold uppercase tracking-wider mb-4 font-mono">
           <Sparkles className="w-3.5 h-3.5 text-[#A98453]" />
-          <span>Evidence-Based Startup Evaluation</span>
+          <span>Evidence-Based Business Idea Evaluation</span>
         </div>
         <h1 className="text-3xl sm:text-5xl font-serif font-extrabold text-[#1A3D2F] tracking-tight mb-4 leading-tight">
-          Validate Your Startup Idea with <br className="hidden sm:inline" />
+          Validate Your Business Idea with <br className="hidden sm:inline" />
           <span className="text-[#A98453] italic">Multi-Source Market Evidence</span>
         </h1>
         <p className="text-slate-600 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed font-body">
-          Stop relying on guesswork. StartupSense automatically extracts evidence across Google Trends, Reddit discussions, Hacker News threads, GitHub repositories, and DNS domain availability to generate explainable GO/NO-GO reports.
+          Stop relying on guesswork. Evifacto AI automatically extracts evidence across Google Trends, Reddit discussions, Hacker News threads, GitHub repositories, and DNS domain availability to generate explainable GO/NO-GO reports.
         </p>
       </div>
 
@@ -321,7 +321,7 @@ export const IdeaInputForm: React.FC<IdeaInputFormProps> = ({ onSubmit, isLoadin
             ) : (
               <>
                 <Zap className="w-5 h-5 text-[#C5A880] animate-pulse" />
-                <span className="font-serif">Launch StartupSense Validation Engine</span>
+                <span className="font-serif">Launch Evifacto AI Validation Engine</span>
                 <ArrowRight className="w-5 h-5" />
               </>
             )}

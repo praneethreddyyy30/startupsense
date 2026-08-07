@@ -1,6 +1,6 @@
 {
-  "name": "StartupSense",
-  "description": "An AI-Powered Evidence-Based Startup Validation Platform & Market Intelligence System",
+  "name": "Evifacto AI",
+  "description": "An AI-Powered Evidence-Based Idea Validation Platform & Market Intelligence System",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

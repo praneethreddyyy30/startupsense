@@ -51,7 +51,7 @@ export const ValidationReportView: React.FC<ValidationReportViewProps> = ({
   onNewValidation,
 }) => {
   const [activeTab, setActiveTab] = useState<
-    'overview' | 'trends' | 'pain' | 'tech' | 'competitors' | 'mvp' | 'risks' | 'evidence' | 'copilot'
+    'overview' | 'trends' | 'pain' | 'tech' | 'competitors' | 'mvp' | 'risks' | 'evidence' | 'interviews' | 'landing' | 'copilot'
   >('overview');
 
   const [activeJustify, setActiveJustify] = useState<string | null>(null);
@@ -65,7 +65,7 @@ export const ValidationReportView: React.FC<ValidationReportViewProps> = ({
   const [copilotHistory, setCopilotHistory] = useState<Array<{ sender: 'user' | 'assistant'; text: string }>>([
     {
       sender: 'assistant',
-      text: `Hello! I am your StartupSense Co-Pilot AI. I have analyzed the validation evidence for "${report.ideaInput.title}". Ask me anything about market demand, risks, competitor differentiation, or how to execute your MVP!`,
+      text: `Hello! I am your Evifacto AI Co-Pilot. I have analyzed the validation evidence for "${report.ideaInput.title}". Ask me anything about market demand, risks, competitor differentiation, or how to execute your MVP!`,
     },
   ]);
   const [isCopilotLoading, setIsCopilotLoading] = useState(false);
@@ -177,7 +177,7 @@ export const ValidationReportView: React.FC<ValidationReportViewProps> = ({
             <div>
               <h4 className="font-bold text-sm text-amber-300">Offline Heuristic Intelligence Report (Gemini Rate Limit Notice)</h4>
               <p className="text-xs text-amber-200/80 leading-relaxed mt-0.5">
-                Gemini API rate limit or quota was reached (429 RESOURCE_EXHAUSTED). StartupSense automatically generated an offline heuristic validation report so your workflow remains uninterrupted.
+                Gemini API rate limit or quota was reached (429 RESOURCE_EXHAUSTED). Evifacto AI automatically generated an offline heuristic validation report so your workflow remains uninterrupted.
               </p>
             </div>
           </div>
@@ -326,12 +326,14 @@ export const ValidationReportView: React.FC<ValidationReportViewProps> = ({
         {[
           { id: 'overview', label: 'Executive Scorecard', icon: <Compass className="w-4 h-4" /> },
           { id: 'trends', label: 'Google Trends', icon: <TrendingUp className="w-4 h-4" /> },
-          { id: 'pain', label: 'Reddit Pain Miner', icon: <MessageSquare className="w-4 h-4" /> },
+          { id: 'pain', label: 'Reddit & HN Miner', icon: <MessageSquare className="w-4 h-4" /> },
           { id: 'tech', label: 'GitHub Tech Stack', icon: <Code2 className="w-4 h-4" /> },
           { id: 'competitors', label: 'Competitor Landscape', icon: <Users className="w-4 h-4" /> },
           { id: 'mvp', label: 'MVP Features', icon: <Layers className="w-4 h-4" /> },
           { id: 'risks', label: 'Risk & Mitigation', icon: <AlertTriangle className="w-4 h-4" /> },
           { id: 'evidence', label: 'Evidence Vault', icon: <Search className="w-4 h-4" /> },
+          { id: 'interviews', label: 'Customer Interviews', icon: <Users className="w-4 h-4" /> },
+          { id: 'landing', label: 'Landing Page Copy', icon: <FileText className="w-4 h-4" /> },
           { id: 'copilot', label: 'AI Co-Pilot', icon: <Bot className="w-4 h-4" /> },
         ].map((tab) => {
           const isActive = activeTab === tab.id;
@@ -1153,13 +1155,104 @@ export const ValidationReportView: React.FC<ValidationReportViewProps> = ({
         </div>
       )}
 
+      {/* TAB CONTENT: CUSTOMER INTERVIEW SCRIPT */}
+      {activeTab === 'interviews' && (
+        <div className="space-y-6 animate-fadeIn text-slate-800">
+          <div className="bg-white border border-[#E5E2D9] rounded-3xl p-6 shadow-sm space-y-4">
+            <div className="border-b border-[#E5E2D9] pb-4">
+              <h3 className="text-lg font-serif font-bold text-[#1A3D2F] flex items-center gap-2">
+                <Users className="w-5 h-5 text-[#1A3D2F]" />
+                <span>"The Mom Test" Customer Interview Script</span>
+              </h3>
+              <p className="text-xs text-slate-500 font-body">
+                Conduct customer development conversations with open-ended, non-leading questions to uncover true behavior and risk variables.
+              </p>
+            </div>
+
+            {report.customerInterviewScript ? (
+              <div className="space-y-4">
+                <p className="text-sm font-medium text-slate-700 bg-[#FAF8F5] p-4 rounded-xl border border-[#E5E2D9] leading-relaxed font-body">
+                  💡 <strong>Methodology Note:</strong> {report.customerInterviewScript.introduction}
+                </p>
+                <div className="space-y-2.5">
+                  {report.customerInterviewScript.questions.map((q, idx) => (
+                    <div key={idx} className="p-4 rounded-xl border border-[#E5E2D9] bg-[#FAF8F5] flex items-start gap-4 hover:border-[#1A3D2F]/30 transition-colors">
+                      <span className="w-7 h-7 rounded-full bg-[#1A3D2F] text-white flex items-center justify-center text-xs font-mono font-bold shrink-0">
+                        {idx + 1}
+                      </span>
+                      <p className="text-sm font-serif font-bold text-[#1A3D2F] leading-relaxed self-center">{q}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <p className="text-sm text-slate-500 italic">No custom interview questions generated for this report.</p>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* TAB CONTENT: LANDING PAGE COPY */}
+      {activeTab === 'landing' && (
+        <div className="space-y-6 animate-fadeIn text-slate-800">
+          <div className="bg-white border border-[#E5E2D9] rounded-3xl p-6 shadow-sm space-y-4">
+            <div className="border-b border-[#E5E2D9] pb-4">
+              <h3 className="text-lg font-serif font-bold text-[#1A3D2F] flex items-center gap-2">
+                <FileText className="w-5 h-5 text-[#1A3D2F]" />
+                <span>Pre-Launch Landing Page Copywriter</span>
+              </h3>
+              <p className="text-xs text-slate-500 font-body">
+                Copy-paste these sections directly into your landing page builder (Carrd, Framer, Wix, etc.) to set up a sign-up page and measure conversion interest.
+              </p>
+            </div>
+
+            {report.landingPageCopy ? (
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-2">
+                <div className="space-y-4">
+                  <div className="p-4.5 rounded-2xl border border-[#E5E2D9] bg-[#FAF8F5] space-y-2">
+                    <span className="text-[10px] uppercase font-bold tracking-wider text-slate-450 font-mono">Hero Headline</span>
+                    <h4 className="text-xl font-serif font-extrabold text-[#1A3D2F] leading-snug">{report.landingPageCopy.heroHeadline}</h4>
+                  </div>
+                  <div className="p-4.5 rounded-2xl border border-[#E5E2D9] bg-[#FAF8F5] space-y-2">
+                    <span className="text-[10px] uppercase font-bold tracking-wider text-slate-450 font-mono">Hero Subheadline</span>
+                    <p className="text-sm leading-relaxed text-slate-650 font-body">{report.landingPageCopy.heroSubheadline}</p>
+                  </div>
+                  <div className="p-4.5 rounded-2xl border border-[#E5E2D9] bg-[#FAF8F5] space-y-2">
+                    <span className="text-[10px] uppercase font-bold tracking-wider text-slate-450 font-mono block">Call To Action (CTA) Button</span>
+                    <button className="px-5 py-2.5 rounded-xl bg-[#1A3D2F] text-white text-xs font-mono font-bold tracking-wide shadow-sm w-fit">
+                      {report.landingPageCopy.ctaText}
+                    </button>
+                  </div>
+                </div>
+
+                <div className="p-5 rounded-2xl border border-[#E5E2D9] bg-[#FAF8F5] space-y-4">
+                  <span className="text-[10px] uppercase font-bold tracking-wider text-slate-450 font-mono block">Feature / Value Propositions</span>
+                  <div className="space-y-3">
+                    {[report.landingPageCopy.valueProp1, report.landingPageCopy.valueProp2, report.landingPageCopy.valueProp3].map((prop, index) => (
+                      <div key={index} className="flex gap-3 items-start">
+                        <span className="w-5 h-5 rounded-full bg-[#A98453]/20 text-[#A98453] flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5 font-mono">
+                          ✓
+                        </span>
+                        <p className="text-xs text-slate-700 leading-relaxed font-body">{prop}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <p className="text-sm text-slate-500 italic">No landing page copy generated for this report.</p>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* TAB CONTENT: AI CO-PILOT CHAT */}
       {activeTab === 'copilot' && (
         <div className="bg-white border border-[#E5E2D9] rounded-3xl p-6 shadow-sm space-y-4 animate-fadeIn text-slate-800">
           <div className="flex items-center gap-2 border-b border-[#E5E2D9] pb-4">
             <Bot className="w-6 h-6 text-[#1A3D2F]" />
             <div>
-              <h3 className="font-serif font-bold text-lg text-[#1A3D2F]">StartupSense AI Co-Pilot</h3>
+              <h3 className="font-serif font-bold text-lg text-[#1A3D2F]">Evifacto AI Co-Pilot</h3>
               <p className="text-xs text-slate-500 font-body">Grounded strictly in the validated report evidence for {report.ideaInput.title}</p>
             </div>
           </div>

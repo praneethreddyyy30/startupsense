@@ -33,13 +33,13 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div>
             <div className="flex items-center gap-2">
               <span className="font-serif font-bold text-xl tracking-tight text-[#1A3D2F]">
-                StartupSense
+                Evifacto
               </span>
               <span className="text-[9px] uppercase tracking-wider font-bold px-2 py-0.5 rounded bg-[#1A3D2F]/10 text-[#1A3D2F] border border-[#1A3D2F]/20">
-                AI Engine
+                B2B SaaS
               </span>
             </div>
-            <p className="text-[10px] font-serif italic text-[#A98453] hidden sm:block">Evidence-Based Market Intelligence</p>
+            <p className="text-[10px] font-serif italic text-[#A98453] hidden sm:block">Market Intelligence & Idea Validation</p>
           </div>
         </div>
 

@@ -1,14 +1,14 @@
-# 🏛️ StartupSense: Evidence-Based Startup Evaluation Engine
+# 🏛️ Evifacto AI: Evidence-Based Business Idea Evaluation Engine
 
-StartupSense is a premium full-stack startup validation workspace designed to evaluate new business ideas against real-time market facts. Rather than relying on static AI predictions or guesswork, StartupSense deploys an orchestration of live background crawlers to gather evidence from the web, scoring and validating concepts using Gemini AI.
+Evifacto AI is a premium full-stack idea validation workspace designed to evaluate new business concepts against real-time market facts. Rather than relying on static AI predictions or guesswork, Evifacto AI deploys an orchestration of live background crawlers to gather evidence from the web, scoring and validating concepts using Gemini AI.
 
 ---
 
-## 💎 How StartupSense Differs from Existing Platforms
+## 💎 How Evifacto AI Differs from Existing Platforms
 
-Traditional AI-powered startup validators usually suffer from **model hallucination**—they simply ask an AI model to guess if an idea is good, producing generic, unsubstantiated scores. StartupSense changes this by enforcing **factual grounding**:
+Traditional AI-powered startup validators usually suffer from **model hallucination**—they simply ask an AI model to guess if an idea is good, producing generic, unsubstantiated scores. Evifacto AI changes this by enforcing **factual grounding**:
 
-| Feature | Legacy AI Validators | StartupSense |
+| Feature | Legacy AI Validators | Evifacto AI |
 | :--- | :--- | :--- |
 | **Data Integrity** | Hallucinated market size, fake competitors, and guessed sentiment | **Real-Time Data**: Queries Google, Reddit, Hacker News, and GitHub in live streams |
 | **Evidence Auditing** | Fails to show references; you must take the AI's word for it | **Direct Links**: Every metric features an `"Audit Source ↗"` button linking to the source |
@@ -46,7 +46,7 @@ Whenever a founder launches validation for a startup concept, the orchestrator e
 
 ## 🏗️ System Architecture
 
-StartupSense is built as a modular, lightweight full-stack application:
+Evifacto AI is built as a modular, lightweight full-stack application:
 
 *   **Frontend**: React (TypeScript) + Vite + Recharts + Lucide Icons. Designed with a bright, premium "Old Money" aesthetic (Ivory backgrounds `#FAF8F5`, British Racing Green accents, Classic Navy text, and gold badges).
 *   **Backend**: Node.js + Express + ESBuild. 

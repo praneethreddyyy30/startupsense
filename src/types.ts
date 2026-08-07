@@ -205,6 +205,18 @@ export interface ValidationReport {
     status: string;
   }>;
   googleAutocompleteSuggestions?: string[];
+  customerInterviewScript?: {
+    introduction: string;
+    questions: string[];
+  };
+  landingPageCopy?: {
+    heroHeadline: string;
+    heroSubheadline: string;
+    valueProp1: string;
+    valueProp2: string;
+    valueProp3: string;
+    ctaText: string;
+  };
 }
 
 export interface SavedReportSummary {

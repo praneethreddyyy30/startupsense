@@ -73,7 +73,7 @@ export const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ isOpen, onClose }) => 
               <span>Automatic Failover Active</span>
             </div>
             <p className="text-[11px] text-emerald-300/80 leading-relaxed">
-              StartupSense includes automatic fallback handling. If your quota is temporarily exhausted (429), the app automatically generates offline heuristic market intelligence reports without crashing!
+              Evifacto AI includes automatic fallback handling. If your quota is temporarily exhausted (429), the app automatically generates offline heuristic market intelligence reports without crashing!
             </p>
           </div>
         </div>
