@@ -126,6 +126,9 @@ export default function App() {
       setActiveReport(null);
       if (activeTab === 'report') setActiveTab('input');
     }
+    fetch(`/api/reports/${id}`, {
+      method: 'DELETE',
+    }).catch(console.error);
   };
 
   const handleCompareSelect = (id1: string, id2: string) => {

@@ -509,6 +509,16 @@ app.post('/api/reports', (req, res) => {
   res.json({ success: true, id: report.id });
 });
 
+app.delete('/api/reports/:id', (req, res) => {
+  const deleted = savedReportsStore.delete(req.params.id);
+  if (deleted) {
+    saveReportsToFile(savedReportsStore);
+    res.json({ success: true });
+  } else {
+    res.status(404).json({ error: 'Report not found' });
+  }
+});
+
 // API: Core Idea Validation Service
 app.post('/api/validate', async (req, res) => {
   try {
