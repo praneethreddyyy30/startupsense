@@ -314,7 +314,7 @@ export const ValidationReportView: React.FC<ValidationReportViewProps> = ({
               key={tab.id}
               id={`tab-btn-${tab.id}`}
               onClick={() => setActiveTab(tab.id as any)}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs whitespace-nowrap transition-all cursor-pointer ${
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs whitespace-nowrap shrink-0 transition-all cursor-pointer ${
                 isActive
                   ? 'bg-[#1A3D2F] text-white shadow-sm'
                   : 'text-slate-500 hover:text-[#1A3D2F] hover:bg-[#E5E2D9]/40'
@@ -383,7 +383,7 @@ export const ValidationReportView: React.FC<ValidationReportViewProps> = ({
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={dimensionData} layout="vertical" margin={{ left: 20, right: 20, top: 10, bottom: 10 }}>
                     <XAxis type="number" domain={[0, 100]} stroke="#64748b" tick={{ fill: '#475569' }} />
-                    <YAxis dataKey="name" type="category" stroke="#64748b" tick={{ fontSize: 11, fill: '#475569' }} width={120} />
+                    <YAxis dataKey="name" type="category" stroke="#64748b" tick={{ fontSize: 10, fill: '#475569' }} width={95} />
                     <Tooltip contentStyle={{ backgroundColor: '#ffffff', borderColor: '#e5e2d9', color: '#1a3d2f' }} formatter={(value) => [`${value}/100`, 'Score']} />
                     <Bar dataKey="score" radius={[0, 8, 8, 0]}>
                       {dimensionData.map((entry, index) => (

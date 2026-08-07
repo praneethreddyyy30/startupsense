@@ -262,8 +262,8 @@ export const ResearchOrchestratorModal: React.FC<ResearchOrchestratorModalProps>
               </div>
             </div>
  
-            {/* Labels beneath ticks */}
-            <div className="absolute top-[62px] inset-x-0 flex justify-between px-[3%] text-[9px] font-bold tracking-wide text-slate-400 font-mono">
+            {/* Labels beneath ticks (hidden on small screens to prevent overlap) */}
+            <div className="absolute top-[62px] inset-x-0 hidden sm:flex justify-between px-[3%] text-[9px] font-bold tracking-wide text-slate-400 font-mono">
               <span className={`w-20 text-center transition-colors ${activeStep === 1 ? 'text-[#1A3D2F]' : activeStep > 1 ? 'text-slate-650' : ''}`}>Google Trends</span>
               <span className={`w-20 text-center transition-colors ${activeStep === 2 ? 'text-[#1A3D2F]' : activeStep > 2 ? 'text-slate-655' : ''}`}>Autocomplete</span>
               <span className={`w-20 text-center transition-colors ${activeStep === 3 ? 'text-[#1A3D2F]' : activeStep > 3 ? 'text-slate-655' : ''}`}>Reddit & HN</span>
@@ -271,6 +271,17 @@ export const ResearchOrchestratorModal: React.FC<ResearchOrchestratorModalProps>
               <span className={`w-24 text-center transition-colors ${activeStep === 5 ? 'text-[#1A3D2F]' : activeStep > 5 ? 'text-slate-655' : ''}`}>Product Hunt & IH</span>
               <span className={`w-24 text-center transition-colors ${activeStep === 6 ? 'text-[#A98453] font-extrabold' : ''}`}>Competitor Synthesis</span>
             </div>
+          </div>
+
+          {/* Mobile active step label */}
+          <div className="sm:hidden text-center text-[10px] font-mono font-bold text-[#1A3D2F] mt-2 border-t border-[#E5E2D9]/40 pt-2 animate-pulse">
+            Active Agent: {activeStep === 0 && 'Extracting inputs...'}
+            {activeStep === 1 && 'Google Trends Engine'}
+            {activeStep === 2 && 'Google Autocomplete'}
+            {activeStep === 3 && 'Reddit & HN Miner'}
+            {activeStep === 4 && 'GitHub Tech Stack'}
+            {activeStep === 5 && 'Product Hunt & IH Auditor'}
+            {activeStep === 6 && 'Competitor Synthesis'}
           </div>
         </div>
  
