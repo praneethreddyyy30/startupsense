@@ -214,7 +214,7 @@ export const ValidationReportView: React.FC<ValidationReportViewProps> = ({
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 bg-[#FAF8F5] p-4 rounded-2xl border border-[#E5E2D9]">
             <div className="flex items-center gap-3 px-2">
               <div className="relative w-14 h-14 flex items-center justify-center">
-                <svg className="w-full h-full transform -rotate-90">
+                <svg className="w-full h-full transform -rotate-90" viewBox="0 0 56 56">
                   {/* Outer circle track */}
                   <circle
                     cx="28"
@@ -1099,7 +1099,7 @@ export const ValidationReportView: React.FC<ValidationReportViewProps> = ({
 
               {/* Source Filters */}
               <div className="flex flex-wrap items-center gap-2 font-mono text-[10px]">
-                {['all', 'google_trends', 'reddit', 'github', 'competitor'].map((src) => (
+                {['all', 'google_trends', 'reddit', 'github', 'competitor', 'product_hunt', 'indie_hackers'].map((src) => (
                   <button
                     key={src}
                     onClick={() => setEvidenceSourceFilter(src as any)}

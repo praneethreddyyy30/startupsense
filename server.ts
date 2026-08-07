@@ -72,7 +72,7 @@ async function fetchHackerNewsData(keywords: string[]) {
       title: hit.title,
       points: hit.points || 0,
       commentsCount: hit.num_comments || 0,
-      url: hit.url || `https://news.ycombinator.com/item?id=${hit.objectID}`
+      url: `https://news.ycombinator.com/item?id=${hit.objectID}`
     }));
   } catch (e) {
     console.error('HN fetch failed:', e);
@@ -1173,12 +1173,15 @@ RESEARCH & EVALUATION INSTRUCTIONS:
 Evaluate these inputs, and execute live search queries on Google search grounding to find:
 1. Google Trends (Search interest score 0-100, 12-month trend simulation, velocity, related search queries, regional interest hotspots).
 2. Competitor Discovery (Direct competitors with features, strengths, pricing & weaknesses, market saturation, blue ocean gap opportunities).
+3. Product Hunt Launches (Search for similar product launches on Product Hunt, extracting their name, launch description, and launch votes/activity).
+4. Indie Hackers Post-Mortems (Search for discussions or case studies on Indie Hackers detailing business model post-mortems, failures, or pivot lessons in this category).
 
 INCORPORATE HARVESTED DATA:
 - Under "customerPainPoints", ensure you reference the Reddit comments if any are found.
 - Under "technicalEcosystem", reference the GitHub repositories found above (names, stars, url) and recommend a stack.
 - For Hacker News, summarize the discussions and feedback.
 - For Domain availability, map the domain list.
+- Under "evidenceList", make sure to include findings from your Product Hunt searches (using source "product_hunt") and Indie Hackers searches (using source "indie_hackers") in addition to Reddit, GitHub, and competitor references.
 
 RECOMMENDATION RULES:
 - Choose 'GO' if validationScore >= 78 and pain severity + demand are high.
@@ -1316,7 +1319,7 @@ Output MUST strictly be a JSON object matching this schema structure:
   "evidenceList": [
     {
       "id": "ev1",
-      "source": "reddit",
+      "source": "reddit" | "github" | "google_trends" | "competitor" | "product_hunt" | "indie_hackers",
       "title": "title",
       "snippet": "snippet",
       "quoteOrStat": "quote",

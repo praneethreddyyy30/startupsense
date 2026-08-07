@@ -1,6 +1,6 @@
 export type RecommendationStatus = 'GO' | 'CONDITIONAL_GO' | 'PIVOT' | 'NO_GO';
 
-export type EvidenceSource = 'google_trends' | 'reddit' | 'github' | 'competitor' | 'web_search';
+export type EvidenceSource = 'google_trends' | 'reddit' | 'github' | 'competitor' | 'web_search' | 'product_hunt' | 'indie_hackers';
 
 export interface StartupIdeaInput {
   title: string;
