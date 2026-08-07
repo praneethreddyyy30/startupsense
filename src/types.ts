@@ -204,6 +204,7 @@ export interface ValidationReport {
     datasetProcessed: string;
     status: string;
   }>;
+  googleAutocompleteSuggestions?: string[];
 }
 
 export interface SavedReportSummary {

@@ -1419,6 +1419,7 @@ Output MUST strictly be a JSON object matching this schema structure:
     }
 
     report.domainAvailability = domainData;
+    report.googleAutocompleteSuggestions = suggestions;
     report.hackerNewsAnalysis = {
       summary: hnData.length > 0 ? `Found ${hnData.length} relevant Hacker News threads discussing this space.` : 'No relevant Hacker News threads found.',
       posts: hnData

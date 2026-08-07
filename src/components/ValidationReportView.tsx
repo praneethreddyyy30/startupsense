@@ -703,6 +703,25 @@ export const ValidationReportView: React.FC<ValidationReportViewProps> = ({
               </div>
             </div>
           </div>
+
+          {/* Autocomplete Suggestions */}
+          {report.googleAutocompleteSuggestions && report.googleAutocompleteSuggestions.length > 0 && (
+            <div className="bg-white border border-[#E5E2D9] p-6 shadow-sm rounded-3xl space-y-3">
+              <h4 className="font-serif font-bold text-sm text-[#1A3D2F]">Google Autocomplete Search Suggestions (Live Intent)</h4>
+              <p className="text-xs text-slate-500 font-body">Actual query suggestions retrieved in real-time from Google's search-intent suggestion index.</p>
+              <div className="flex flex-wrap gap-2 pt-1">
+                {report.googleAutocompleteSuggestions.map((suggestion, i) => (
+                  <span 
+                    key={i} 
+                    className="px-3.5 py-2 rounded-xl bg-[#FAF8F5] border border-[#E5E2D9] text-xs font-mono text-slate-700 flex items-center gap-1.5 shadow-sm hover:border-[#1A3D2F] transition-all cursor-default"
+                  >
+                    <Search className="w-3.5 h-3.5 text-[#A98453]" />
+                    <span>{suggestion}</span>
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
 
