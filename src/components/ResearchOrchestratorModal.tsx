@@ -32,7 +32,7 @@ export const ResearchOrchestratorModal: React.FC<ResearchOrchestratorModalProps>
     if (lastEvent.stage === 'understanding') return 0;
     if (lastEvent.stage === 'google_trends') return 1;
     if (lastEvent.stage === 'google_autocomplete') return 2;
-    if (lastEvent.stage === 'reddit_community') return 3;
+    if (lastEvent.stage === 'reddit_community' || lastEvent.stage === 'hn_feedback') return 3;
     if (lastEvent.stage === 'github_tech') return 4;
     if (lastEvent.stage === 'product_hunt_auditor') return 5;
     if (lastEvent.stage === 'domain_check' || lastEvent.stage === 'gemini_synthesis') return 6;
