@@ -80,6 +80,48 @@ async function fetchHackerNewsData(keywords: string[]) {
   }
 }
 
+// Helper: Heuristic Search Query Extractor
+function extractSearchQueries(title: string, description: string): string[] {
+  const queries: string[] = [];
+  const parts = title.split(/[:\-\|]/);
+  
+  // 1. Tagline (second part of the title)
+  if (parts.length > 1 && parts[1].trim().length > 3) {
+    const tagline = parts[1].trim();
+    // Take the first 3 words of the tagline to make a high-yield search phrase
+    const taglineWords = tagline.split(/\s+/).slice(0, 3).join(' ');
+    if (taglineWords.length > 3) {
+      queries.push(taglineWords);
+    }
+  }
+  
+  // 2. Brand Name (if it contains multiple words, e.g. "Surplus Food Marketplace")
+  const brand = parts[0].trim();
+  if (brand.split(/\s+/).length >= 2) {
+    queries.push(brand);
+  }
+  
+  // 3. Fallback: extract the first 3 words of the description
+  if (queries.length === 0 && description) {
+    const descWords = description
+      .replace(/[^a-zA-Z0-9\s]/g, '')
+      .split(/\s+/)
+      .filter(w => w.length > 2)
+      .slice(0, 3)
+      .join(' ');
+    if (descWords.length > 3) {
+      queries.push(descWords);
+    }
+  }
+  
+  // 4. Ultimate fallback
+  if (queries.length === 0) {
+    queries.push(brand || 'saas');
+  }
+  
+  return queries;
+}
+
 // Helper: Google Autocomplete Suggestions Fetcher
 async function fetchGoogleSuggestions(query: string): Promise<string[]> {
   try {
@@ -1014,6 +1056,11 @@ app.get('/api/validate-stream', async (req, res) => {
       return;
     }
 
+    // Extract high-yield search keywords
+    const extractedQueries = extractSearchQueries(title, description);
+    const searchKeywords = keywords && keywords.length > 0 ? keywords : extractedQueries;
+    const primarySearchTerm = searchKeywords[0];
+
     // Step 1: Idea Understanding Module
     sendProgress('understanding', 'active', [
       `Parsing input text for "${title}"`,
@@ -1025,7 +1072,7 @@ app.get('/api/validate-stream', async (req, res) => {
 
     // Step 2: Google Trends Engine
     sendProgress('google_trends', 'active', [
-      `Querying Google search volume velocity for keyword: "${keywords[0] || title}"`,
+      `Querying Google search volume velocity for keyword: "${primarySearchTerm}"`,
       'Analyzing interest trends over time data indexes',
       'Mapping search query regional hotspots'
     ]);
@@ -1034,37 +1081,37 @@ app.get('/api/validate-stream', async (req, res) => {
 
     // Step 2.5: Google Autocomplete & PAA Engine
     sendProgress('google_autocomplete', 'active', [
-      `Querying Google Autocomplete index for target search queries: "${keywords[0] || title}"`,
+      `Querying Google Autocomplete index for target search queries: "${primarySearchTerm}"`,
       'Evaluating real search intent indicators and search query suggestions'
     ]);
-    const suggestions = await fetchGoogleSuggestions(keywords[0] || title);
+    const suggestions = await fetchGoogleSuggestions(primarySearchTerm);
     sendProgress('google_autocomplete', 'completed', [], suggestions);
 
     // Step 3: Reddit Miner
     sendProgress('reddit_community', 'active', [
-      `Searching Reddit discussions and SaaS/startups comments...`,
+      `Searching Reddit discussions and SaaS/startups comments for "${primarySearchTerm}"...`,
       'Crawling public JSON streams for user posts',
       'Analyzing customer complaints and sentiment metrics'
     ]);
-    const redditData = await fetchRedditData(keywords.length > 0 ? keywords : [title]);
+    const redditData = await fetchRedditData(searchKeywords);
     sendProgress('reddit_community', 'completed', [], { count: redditData.length, posts: redditData.slice(0, 3) });
 
     // Step 4: Hacker News Agent
     sendProgress('hn_feedback', 'active', [
-      `Searching Hacker News YC stories and discussions...`,
+      `Searching Hacker News YC stories and discussions for "${primarySearchTerm}"...`,
       'Querying HN Algolia search logs API',
       'Aggregating developer feedback and point ratings'
     ]);
-    const hnData = await fetchHackerNewsData(keywords.length > 0 ? keywords : [title]);
+    const hnData = await fetchHackerNewsData(searchKeywords);
     sendProgress('hn_feedback', 'completed', [], { count: hnData.length, posts: hnData.slice(0, 3) });
 
     // Step 5: GitHub Tech Stack
     sendProgress('github_tech', 'active', [
-      `Querying GitHub REST Search API for open core repositories...`,
+      `Querying GitHub REST Search API for open core repositories relating to "${primarySearchTerm}"...`,
       'Analyzing repository star counts, languages, and fork velocity',
-      'Calculating framework stack maturity and implementation readiness'
+      'Calculating framework stack maturity and implementation readiness font'
     ]);
-    const githubData = await fetchGitHubData(keywords.length > 0 ? keywords : [title]);
+    const githubData = await fetchGitHubData(searchKeywords);
     sendProgress('github_tech', 'completed', [], { count: githubData.length, repos: githubData.slice(0, 3) });
 
     // Step 5.5: Product Hunt & Indie Hackers Auditor

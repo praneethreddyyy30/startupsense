@@ -212,21 +212,47 @@ export const ValidationReportView: React.FC<ValidationReportViewProps> = ({
 
           {/* Verdict Badge */}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 bg-[#FAF8F5] p-4 rounded-2xl border border-[#E5E2D9]">
-            <div className="text-center sm:text-left px-2">
-              <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block mb-1 font-mono">
-                Validation Score
-              </span>
-              <div className="flex items-baseline gap-1 justify-center sm:justify-start">
-                <span className="text-4xl sm:text-5xl font-black text-[#1A3D2F] font-mono">
+            <div className="flex items-center gap-3 px-2">
+              <div className="relative w-14 h-14 flex items-center justify-center">
+                <svg className="w-full h-full transform -rotate-90">
+                  {/* Outer circle track */}
+                  <circle
+                    cx="28"
+                    cy="28"
+                    r="24"
+                    stroke="#E5E2D9"
+                    strokeWidth="3.5"
+                    fill="transparent"
+                  />
+                  {/* Colored progress circle */}
+                  <circle
+                    cx="28"
+                    cy="28"
+                    r="24"
+                    stroke="#1A3D2F"
+                    strokeWidth="4.5"
+                    fill="transparent"
+                    strokeDasharray={150.8}
+                    strokeDashoffset={150.8 - (report.validationScore / 100) * 150.8}
+                    strokeLinecap="round"
+                    className="transition-all duration-1000 ease-out"
+                  />
+                </svg>
+                <div className="absolute font-mono font-black text-[#1A3D2F] text-sm">
                   {report.validationScore}
+                </div>
+              </div>
+              <div>
+                <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block font-mono">
+                  Validation Score
                 </span>
-                <span className="text-slate-400 font-bold text-lg">/ 100</span>
+                <span className="text-[10px] text-slate-500 font-mono">Scale: 0 - 100</span>
               </div>
             </div>
 
             <div className="h-px sm:h-12 w-full sm:w-px bg-[#E5E2D9]"></div>
 
-            <div className="space-y-1">
+            <div className="space-y-1 pl-1">
               <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block font-mono">
                 Executive Verdict
               </span>
