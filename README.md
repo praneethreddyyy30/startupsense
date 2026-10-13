@@ -1,97 +1,191 @@
-# 🏛️ Evifacto AI: Evidence-Based Business Idea Evaluation Engine
+# 🏛️ Evifacto AI — Multi-Agent RAG Market Intelligence Engine
 
-Evifacto AI is a premium full-stack idea validation workspace designed to evaluate new business concepts against real-time market facts. Rather than relying on static AI predictions or guesswork, Evifacto AI deploys an orchestration of live background crawlers to gather evidence from the web, scoring and validating concepts using Gemini AI.
+[![Python 3.12+](https://img.shields.io/badge/Python-3.12%2B-blue.svg)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.115%2B-009688.svg)](https://fastapi.tiangolo.com/)
+[![LangGraph](https://img.shields.io/badge/LangGraph-Multi--Agent-orange.svg)](https://github.com/langchain-ai/langgraph)
+[![FastMCP](https://img.shields.io/badge/FastMCP-Model_Context_Protocol-purple.svg)](https://github.com/jlowin/fastmcp)
+[![Pydantic v2](https://img.shields.io/badge/Pydantic-v2.8%2B-red.svg)](https://docs.pydantic.dev/)
+[![React 19](https://img.shields.io/badge/React-19-61dafb.svg)](https://react.dev/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+
+**Evifacto AI** is an enterprise-grade **Agentic AI Market Intelligence & Venture Validation Engine**. Rather than relying on ungrounded LLM guesses and hallucinated metrics, Evifacto orchestrates a **LangGraph StateGraph** that consumes 5 standardized **FastMCP (Model Context Protocol)** tools to harvest real-time market evidence across Reddit, Hacker News, GitHub, ICANN DNS, and Google Autocomplete search intent.
 
 ---
 
-## 💎 How Evifacto AI Differs from Existing Platforms
+## 🏛️ System Architecture
 
-Traditional AI-powered startup validators usually suffer from **model hallucination**—they simply ask an AI model to guess if an idea is good, producing generic, unsubstantiated scores. Evifacto AI changes this by enforcing **factual grounding**:
+```
+                       ┌────────────────────────────────────────┐
+                       │          FastMCP Tool Server           │
+                       │        (`backend/app/mcp_server.py`)   │
+                       │                                        │
+                       │   • search_reddit_pain_points          │
+                       │   • search_hacker_news_discussions     │
+                       │   • audit_github_tech_stack            │
+                       │   • check_dns_domain_viability         │
+                       │   • query_google_search_intent         │
+                       └──────────────────┬─────────────────────┘
+                                          │
+                  ┌───────────────────────┴───────────────────────┐
+                  ▼                                               ▼
+       [ LangGraph Orchestrator ]                       [ FastAPI Microservice ]
+    (`app/agents/orchestrator.py`)                           (`app/main.py`)
+  Retrieval ➔ Guardrail ➔ Synthesis                 SSE Streaming & MCP Tool API
+                  │                                               │
+                  └───────────────────────┬───────────────────────┘
+                                          ▼
+                            [ React 19 Client UI ]
+```
 
-| Feature | Legacy AI Validators | Evifacto AI |
+---
+
+## 💎 Core Architectural Highlights
+
+| Layer | Technology | Engineering Purpose |
 | :--- | :--- | :--- |
-| **Data Integrity** | Hallucinated market size, fake competitors, and guessed sentiment | **Real-Time Data**: Queries Google, Reddit, Hacker News, and GitHub in live streams |
-| **Evidence Auditing** | Fails to show references; you must take the AI's word for it | **Direct Links**: Every metric features an `"Audit Source ↗"` button linking to the source |
-| **Problem Validation** | Guesses what customers want based on training data | **Pain Mining**: Scrapes actual user complaint quotes directly from target forums |
-| **Domain Checks** | Requires manual search on registrar sites | **Parallel DNS Probing**: Runs real-time DNS queries for `.com`, `.io`, and `.ai` |
-| **Data Privacy** | In-memory only; restarts wipe all your entries | **Local DB Persistence**: Auto-saves validation history locally to `reports.json` |
+| **Agentic Tooling** | **FastMCP (Model Context Protocol)** | Standardizes 5 data harvesters into an open MCP server; any MCP client (Claude Desktop, Cursor, LangGraph) can connect. |
+| **Orchestration** | **LangGraph StateGraph** | Multi-node deterministic state machine coordinating `Retrieval ➔ Anti-Sycophancy Guardrail ➔ Gemini Synthesis`. |
+| **API Backend** | **FastAPI + Uvicorn** | High-concurrency async web service with Server-Sent Events (SSE) streaming live audit steps to the client. |
+| **Data Contracts** | **Pydantic v2 + AliasChoices** | Strict contract validation; seamlessly maps between React `camelCase` and Python `snake_case`. |
+| **LLM Synthesis** | **Gemini 2.5 Flash** | Evidence-grounded synthesis with structured output generating Mom-Test interview scripts, go-to-market copy, and scorecards. |
+| **Frontend** | **React 19 + TypeScript + Vite** | Premium analytical dashboard featuring radar scorecards and real-time validation log visualizers. |
 
 ---
 
-## 🌀 The Research Orchestration Workflow
+## 🛡️ Anti-Sycophancy Guardrail Engine
 
-Whenever a founder launches validation for a startup concept, the orchestrator executes a coordinated 6-stage workflow:
+Standard LLMs suffer from **sycophancy**—they tend to act as "yes-men", blindly praising unviable startup ideas (e.g., paid flashlight apps, QR code scanners). 
 
-```
-[Founder Input] ──> 1. Parse & Understand ──> 2. Google Trends & Autocomplete 
-                                                           │
-┌──────────────────────────────────────────────────────────┘
-│
-└──> 3. Social Pain Miner (Reddit & HN) ──> 4. GitHub Developer Adoption Check
-                                                           │
-┌──────────────────────────────────────────────────────────┘
-│
-└──> 5. Product Hunt & IH Auditor ──> 6. Parallel DNS & Gemini Synthesis ──> [Scorecard UI]
-```
-
-1. **Brand Extraction & Understanding**: Normalizes the startup tagline (e.g. extracts `HarvestPulse` from `HarvestPulse: B2B Surplus Food Marketplace`) and initializes secondary keyword tokens.
-2. **Google Trends & Autocomplete**: Evaluates search volume momentum, keyword velocity trends, and crawls Google's autocomplete index to pull actual user search queries and intent.
-3. **Reddit & Hacker News Pain Miner**: Queries target subreddits (`r/SaaS`, `r/startups`, etc.) and the Hacker News Algolia index for real-world user frustrations, extracting raw quote blocks.
-4. **GitHub Tech Stack**: Queries active repository stars, forks, and language usage metrics to gauge developer tooling adoption.
-5. **Product Hunt & Indie Hackers Auditor**: Scrapes previous launch directories for similar products and scans Indie Hackers case studies for business model failures and revenue post-mortems.
-6. **Domain DNS Checker**: Runs asynchronous DNS queries against `.com`, `.io`, and `.ai` extensions to verify true registry availability.
-7. **Gemini 3.6 Grounding Synthesis**: Consolidates all datasets and passes them into **Gemini 3.6 Flash** (with Google Search Grounding enabled) to compute scores, map competitors, define TAM/SAM/SOM, and suggest pivots.
+Evifacto enforces a dedicated **Guardrail Node** in the LangGraph workflow:
+* Pre-filters commodity utility traps with zero market defensibility.
+* Automatically forces an evidence-grounded rejection (`NO_GO`, score $\le 35$) without wasting LLM tokens.
+* Explains the structural barrier (e.g., native iOS/Android features, zero recurring willingness to pay).
 
 ---
 
-## 🏗️ System Architecture
+## 🧪 Automated Multi-Turn Evaluation Harness
 
-Evifacto AI is built as a modular, lightweight full-stack application:
+Evifacto includes a production benchmark suite (`backend/tests/test_agent_harness.py`) that grades the agent against archetypes before deployment:
 
-*   **Frontend**: React (TypeScript) + Vite + Recharts + Lucide Icons. Designed with a bright, premium "Old Money" aesthetic (Ivory backgrounds `#FAF8F5`, British Racing Green accents, Classic Navy text, and gold badges).
-*   **Backend**: Node.js + Express + ESBuild. 
-*   **Persistence**: Flat-file JSON database (`reports.json`) with auto-reload.
-*   **Communication**: Server-Sent Events (SSE) stream for real-time validation logs, utilizing a two-way POST-GET handshake to handle long, detailed descriptions without URL length limit errors.
-
----
-
-## 🚀 Getting Started
-
-### Prerequisites
-*   Node.js (v18 or higher)
-*   Gemini API Key (Get a free key from [Google AI Studio](https://aistudio.google.com/))
-
-### Installation
-1. Clone your repository:
-   ```bash
-   git clone https://github.com/praneethreddyyy30/startupsense.git
-   cd startupsense
-   ```
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Configure environment variables. Create a `.env` file in the root directory:
-   ```env
-   GEMINI_API_KEY=your_actual_gemini_key_here
-   PORT=3000
-   ```
-
-### Running Locally
-To launch both the Vite dev assets and the Express backend server concurrently:
 ```bash
+python backend/tests/test_agent_harness.py
+```
+
+### Benchmark Results:
+```text
+======================================================================
+[*] EVIFACTO MULTI-TURN AGENT EVALUATION & TEST HARNESS
+======================================================================
+[TEST 1/3] Benchmarking Viable B2B SaaS Concept (DentalDesk AI)...
+  * Title: DentalDesk AI
+  * Recommendation: GO (Validation Score: 82/100)
+  * Audit Agents Logged: 6
+  [PASS] TEST 1: High-demand venture correctly scored with live signals.
+
+[TEST 2/3] Benchmarking Anti-Sycophancy Guardrail (Commodity Trap)...
+  * Title: QuickScan Pro (QR Scanner)
+  * Recommendation: NO_GO (Validation Score: 24/100, Threshold <= 35)
+  * Anti-Sycophancy Triggered: YES
+  [PASS] TEST 2: Anti-sycophancy guardrail rejected commodity trap.
+
+[TEST 3/3] Validating Pydantic Schema Contracts & Score Ranges...
+  [PASS] TEST 3: 100% Pydantic data schema integrity verified.
+
+======================================================================
+[*] EVALUATION BENCHMARK SUMMARY
+======================================================================
+  * Total Tests Executed: 3
+  * Passed: 3 / 3 (100.0%)
+  * Anti-Sycophancy Guardrail Accuracy: 100%
+  * Schema Compliance: 100%
+======================================================================
+[SUCCESS] ALL AGENT EVALUATION HARNESS TESTS PASSED SUCCESSFULLY!
+```
+
+---
+
+## 📁 Repository Structure
+
+```
+startupsense/
+├── backend/                              # Production Python Backend
+│   ├── app/
+│   │   ├── main.py                       # FastAPI entry point, CORS, static mount
+│   │   ├── config.py                     # Pydantic Settings (ENV, API keys)
+│   │   ├── mcp_server.py                 # FastMCP Tool Server (5 MCP tools)
+│   │   ├── api/v1/routes/
+│   │   │   ├── health.py                 # /health readiness probes
+│   │   │   ├── tools.py                  # /api/v1/tools FastMCP registry & runner
+│   │   │   ├── validate.py               # SSE live streaming & REST validation
+│   │   │   └── reports.py                # Saved reports CRUD persistence
+│   │   ├── agents/
+│   │   │   ├── orchestrator.py           # LangGraph StateGraph workflow definition
+│   │   │   ├── guardrails.py             # Anti-sycophancy commodity trap evaluator
+│   │   │   └── tools/                    # Tool implementations
+│   │   ├── schemas/
+│   │   │   ├── idea.py                   # StartupIdeaInput schema
+│   │   │   └── report.py                 # ValidationReport schema (Pydantic v2)
+│   │   └── services/
+│   │       └── report_service.py         # Thread-safe JSON persistence
+│   ├── tests/
+│   │   ├── test_agent_harness.py         # Multi-turn evaluation benchmark harness
+│   │   ├── test_tools.py                 # LangChain/FastMCP tools unit tests
+│   │   └── test_api.py                   # FastAPI HTTP & SSE integration tests
+│   └── requirements.txt                  # Python dependencies
+│
+├── src/                                  # React 19 Frontend
+│   ├── App.tsx                           # Main validation workspace & tabs
+│   ├── components/                       # Dashboard, Scorecard, Pain Points
+│   └── types.ts                          # TypeScript types matching Pydantic
+├── vite.config.ts                        # Vite bundler with FastAPI proxy
+└── package.json                          # Frontend dependencies
+```
+
+---
+
+## 🚀 Quickstart & Running Locally
+
+### 1. Prerequisites
+* **Python 3.12+**
+* **Node.js 18+**
+* **Google Gemini API Key** ([Get free key from Google AI Studio](https://aistudio.google.com/))
+
+### 2. Environment Setup
+Create a `.env` file in the root directory:
+```env
+GEMINI_API_KEY=your_gemini_api_key_here
+PORT=8000
+```
+
+### 3. Install Backend Dependencies
+```bash
+python -m pip install -r backend/requirements.txt
+```
+
+### 4. Run the Python FastAPI Backend
+```bash
+python -m uvicorn app.main:app --app-dir backend --host 0.0.0.0 --port 8000 --reload
+```
+* **Swagger Interactive Docs**: `http://localhost:8000/docs`
+* **Health Check**: `http://localhost:8000/health`
+* **FastMCP Tool Registry**: `http://localhost:8000/api/v1/tools`
+
+### 5. Run the React Frontend (Dev Server)
+In a separate terminal:
+```bash
+npm install
 npm run dev
 ```
-Open **`http://localhost:3000`** in your browser.
+Open `http://localhost:5173` (or port shown by Vite) to access the interactive dashboard.
 
-### Building for Production
-To package the React assets and compile the server bundle to CJS:
+### 6. Run the Test Suites
 ```bash
-npm run build
-npm run start
+python backend/tests/test_tools.py
+python backend/tests/test_api.py
+python backend/tests/test_agent_harness.py
 ```
 
 ---
 
 ## 🛡️ License
-Private repository configurations. Feel free to customize and extend for your own startup validation dashboards.
+MIT License. Built with passion for robust, fact-grounded Agentic AI systems.

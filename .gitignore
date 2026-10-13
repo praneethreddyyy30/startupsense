@@ -8,3 +8,18 @@ coverage/
 !.env.example
 reports.json
 
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+.pytest_cache/
+
+# Local documents / reports
+*.docx
+*.pdf
+generate_first_review_pdf.py
