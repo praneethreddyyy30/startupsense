@@ -19,7 +19,11 @@ venv/
 .venv/
 .pytest_cache/
 
-# Local documents / reports
+# Local documents, slide artifacts, generated scripts, and student project documents
 *.docx
 *.pdf
-generate_first_review_pdf.py
+generate_*.py
+fix_*.py
+align_*.py
+rgmcet_*.png
+PROJECT_PROPOSAL.md
